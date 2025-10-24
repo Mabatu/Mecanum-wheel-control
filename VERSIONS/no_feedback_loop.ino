@@ -1,16 +1,21 @@
 #include <Bluepad32.h>
 
-#define RIGHT_FORWARD_WHEEL 33
-#define RIGHT_BACK_WHEEL 32
-#define LEFT_FORWARD_WHEEL 25
-#define LEFT_BACK_WHEEL 22
+#define RIGHT_FORWARD_WHEEL 32
+#define RIGHT_BACK_WHEEL 19
+#define LEFT_FORWARD_WHEEL 26
+#define LEFT_BACK_WHEEL 25
 
-#define DATA_PIN 19
-#define CLOCK_PIN 18
+#define DATA_PIN 18
+#define CLOCK_PIN 33
 #define LATCH_PIN 23
+#define OUTPUT_ENABLE 27
 
-#define FORWARD 0b10
-#define REVERSE 0b01
+#define FORWARD 0XA9
+#define REVERSE 0X56
+#define CLOCKWISE 0XD1
+#define COUNTER_CLOCKWISE 0X2E
+#define STRAIF_RIGHT 0X1B
+#define STRIF_LEFT 0XE4
 
 #define NEUTRAL_POINT 4
 #define DEAD_ZONE 4
