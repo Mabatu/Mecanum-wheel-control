@@ -59,15 +59,6 @@ void onDisconnectedController(ControllerPtr ctl) {
   }
 }
 
-uint8_t set_direction(int RIGHT_FRONT_WHEEL, int right_back_wheel, int LEFT_FRONT_WHEEL, int left_back_wheel) {
-  uint8_t direction_buffer = 0;
-  direction_buffer |= RIGHT_FRONT_WHEEL << 6;
-  direction_buffer |= right_back_wheel << 4;
-  direction_buffer |= LEFT_FRONT_WHEEL << 2;
-  direction_buffer |= left_back_wheel;
-  return direction_buffer;
-}
-
 void processGamepad(ControllerPtr ctl) {
   //All motors off -> direction control.
   digitalWrite(LATCH_PIN, LOW);
@@ -85,9 +76,8 @@ void processGamepad(ControllerPtr ctl) {
 
   //Controls for left wheels.
   if (LY < NEUTRAL_POINT - DEAD_ZONE) {
-    uint8_t direction = set_direction(FORWARD, FORWARD, FORWARD, FORWARD);
     digitalWrite(LATCH_PIN, LOW);
-    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, direction);
+    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, FORWARD);
     digitalWrite(LATCH_PIN, HIGH);
     Serial.println(direction, BIN);
 
@@ -99,9 +89,8 @@ void processGamepad(ControllerPtr ctl) {
   }
 
   else if (LY > NEUTRAL_POINT + DEAD_ZONE) {
-    uint8_t direction = set_direction(REVERSE, REVERSE, REVERSE, REVERSE);
     digitalWrite(LATCH_PIN, LOW);
-    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, direction);
+    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, BACKWARD);
     digitalWrite(LATCH_PIN, HIGH);
     Serial.println(direction, BIN);
 
@@ -115,9 +104,8 @@ void processGamepad(ControllerPtr ctl) {
 
   if (RX > NEUTRAL_POINT + DEAD_ZONE) {
     //turn clockwise
-    uint8_t direction = set_direction(REVERSE, REVERSE, FORWARD, FORWARD);
     digitalWrite(LATCH_PIN, LOW);
-    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, direction);
+    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, CLOCKWISE);
     digitalWrite(LATCH_PIN, HIGH);
     Serial.println(direction, BIN);
 
@@ -131,9 +119,8 @@ void processGamepad(ControllerPtr ctl) {
 
   else if (RX < NEUTRAL_POINT - DEAD_ZONE) {
     //turn counter-clockwise
-    uint8_t direction = set_direction(FORWARD, FORWARD, REVERSE, REVERSE);
     digitalWrite(LATCH_PIN, LOW);
-    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, direction);
+    shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, COUNTER_CLOCKWISE);
     digitalWrite(LATCH_PIN, HIGH);
     Serial.println(direction, BIN);
 
