@@ -1,8 +1,8 @@
 #include <Bluepad32.h>
 
-#define RIGHT_FORWARD_WHEEL 32
+#define RIGHT_FRONT_WHEEL 32
 #define RIGHT_BACK_WHEEL 19
-#define LEFT_FORWARD_WHEEL 26
+#define LEFT_FRONT_WHEEL 26
 #define LEFT_BACK_WHEEL 25
 
 #define DATA_PIN 18
@@ -59,11 +59,11 @@ void onDisconnectedController(ControllerPtr ctl) {
   }
 }
 
-uint8_t set_direction(int right_forward_wheel, int right_back_wheel, int left_forward_wheel, int left_back_wheel) {
+uint8_t set_direction(int RIGHT_FRONT_WHEEL, int right_back_wheel, int LEFT_FRONT_WHEEL, int left_back_wheel) {
   uint8_t direction_buffer = 0;
-  direction_buffer |= right_forward_wheel << 6;
+  direction_buffer |= RIGHT_FRONT_WHEEL << 6;
   direction_buffer |= right_back_wheel << 4;
-  direction_buffer |= left_forward_wheel << 2;
+  direction_buffer |= LEFT_FRONT_WHEEL << 2;
   direction_buffer |= left_back_wheel;
   return direction_buffer;
 }
@@ -92,8 +92,8 @@ void processGamepad(ControllerPtr ctl) {
     Serial.println(direction, BIN);
 
     int dutyCycle = map(LY, (NEUTRAL_POINT - DEAD_ZONE - 1), -508, MIN_SPEED, MAX_SPEED);
-    analogWrite(RIGHT_FORWARD_WHEEL, dutyCycle);
-    analogWrite(LEFT_FORWARD_WHEEL, dutyCycle);
+    analogWrite(RIGHT_FRONT_WHEEL, dutyCycle);
+    analogWrite(LEFT_FRONT_WHEEL, dutyCycle);
     analogWrite(RIGHT_BACK_WHEEL, dutyCycle);
     analogWrite(LEFT_BACK_WHEEL, dutyCycle);
   }
@@ -107,8 +107,8 @@ void processGamepad(ControllerPtr ctl) {
 
     //Set speed.
     int dutyCycle = map(LY, (NEUTRAL_POINT + DEAD_ZONE + 1), 512, MIN_SPEED, MAX_SPEED);
-    analogWrite(RIGHT_FORWARD_WHEEL, dutyCycle);
-    analogWrite(LEFT_FORWARD_WHEEL, dutyCycle);
+    analogWrite(RIGHT_FRONT_WHEEL, dutyCycle);
+    analogWrite(LEFT_FRONT_WHEEL, dutyCycle);
     analogWrite(RIGHT_BACK_WHEEL, dutyCycle);
     analogWrite(LEFT_BACK_WHEEL, dutyCycle);
   }
@@ -123,8 +123,8 @@ void processGamepad(ControllerPtr ctl) {
 
     //Set speed.
     int dutyCycle = map(RX, (NEUTRAL_POINT + DEAD_ZONE + 1), 512, MIN_SPEED, MAX_SPEED);
-    analogWrite(RIGHT_FORWARD_WHEEL, dutyCycle);
-    analogWrite(LEFT_FORWARD_WHEEL, dutyCycle);
+    analogWrite(RIGHT_FRONT_WHEEL, dutyCycle);
+    analogWrite(LEFT_FRONT_WHEEL, dutyCycle);
     analogWrite(RIGHT_BACK_WHEEL, dutyCycle);
     analogWrite(LEFT_BACK_WHEEL, dutyCycle);
   }
@@ -139,8 +139,8 @@ void processGamepad(ControllerPtr ctl) {
 
     //Set speed.
     int dutyCycle = map(RX, (NEUTRAL_POINT - DEAD_ZONE - 1), -508, MIN_SPEED, MAX_SPEED);
-    analogWrite(RIGHT_FORWARD_WHEEL, dutyCycle);
-    analogWrite(LEFT_FORWARD_WHEEL, dutyCycle);
+    analogWrite(RIGHT_FRONT_WHEEL, dutyCycle);
+    analogWrite(LEFT_FRONT_WHEEL, dutyCycle);
     analogWrite(RIGHT_BACK_WHEEL, dutyCycle);
     analogWrite(LEFT_BACK_WHEEL, dutyCycle);
   }
@@ -182,12 +182,13 @@ void setup() {
   pinMode(DATA_PIN, OUTPUT);
   pinMode(CLOCK_PIN, OUTPUT);
   pinMode(LATCH_PIN, OUTPUT);
+  pinMode(OUTPUT_ENABLE, OUTPUT);
+  digitalWrite(OUPUTPUT_ENABLE, LOW);
 
-  //PWM pins to control speed of wheels
-  /*pinMode(rightWheels, OUTPUT);
-
-  pinMode(leftWheels, OUTPUT);*/
-
+  pinMode(RIGHT_FRONT_WHEEL, OUTPUT);
+  pinMode(RIGHT_BACK_WHEEL, OUTPUT);
+  pinMode(LEFT_FRONT_WHEEL, OUTPUT);
+  pinMode(LEFT_BACK_WHEEL, OUTPUT);
 
   analogWriteFrequency(25000);
   analogWriteResolution(10);
