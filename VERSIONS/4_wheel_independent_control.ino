@@ -1,15 +1,19 @@
 #include <Arduino.h>
+// Library for Bluetooth game controller support
 #include <Bluepad32.h>
 
+// These pins control the speed of each wheel
 #define RIGHT_FRONT_WHEEL 32
-#define RIGHT_BACK_WHEEL 33  //
-#define LEFT_FRONT_WHEEL 25  //M3
-#define LEFT_BACK_WHEEL 26   //M4
+#define RIGHT_BACK_WHEEL 33  
+#define LEFT_FRONT_WHEEL 25  
+#define LEFT_BACK_WHEEL 26   
 
+// SHIFT REGISTER PINS used to send direction control bits to the motor driver
 #define DATA_PIN 18
 #define CLOCK_PIN 19
 #define LATCH_PIN 23
 
+// These hex values represent motor direction combinations
 #define FORWARD 0XAA
 #define REVERSE 0X55
 #define CLOCKWISE 0X5A
