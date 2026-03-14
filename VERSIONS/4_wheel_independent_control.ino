@@ -26,11 +26,11 @@
 #define DIAGONAL_LEFT_FORWARD 0X82
 #define DIAGONAL_LEFT_REVERSE 0X41
 
-#define NEUTRAL_POINT 4
-#define DEAD_ZONE 4
-#define MAX_SPEED 1023
-#define MIN_SPEED 200
-#define DIAGONAL_SPEED 800
+#define NEUTRAL_POINT 4      // Joystick center value
+#define DEAD_ZONE 4          // Ignore small joystick movements
+#define MAX_SPEED 1023       // Maximum PWM duty cycle
+#define MIN_SPEED 200        // Minimum PWM duty cycle to overcome friction
+#define DIAGONAL_SPEED 800   // Fixed speed for diagonal movement
 
 ControllerPtr myControllers[BP32_MAX_GAMEPADS];
 
