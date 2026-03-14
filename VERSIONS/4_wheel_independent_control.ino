@@ -32,6 +32,7 @@
 #define MIN_SPEED 200        // Minimum PWM duty cycle to overcome friction
 #define DIAGONAL_SPEED 800   // Fixed speed for diagonal movement
 
+// Array storing connected controllers
 ControllerPtr myControllers[BP32_MAX_GAMEPADS];
 
 void onConnectedController(ControllerPtr ctl) {
@@ -69,12 +70,15 @@ void onDisconnectedController(ControllerPtr ctl) {
   }
 }
 
+// Process gamepad input and control robot movement
 void processGamepad(ControllerPtr ctl) {
-  //All motors off -> direction control.
+  
+  // Stop motors before applying new direction
   digitalWrite(LATCH_PIN, LOW);
   shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, 0);
   digitalWrite(LATCH_PIN, HIGH);
 
+  // Read controller inputs
   int LY = ctl->axisY();
   int RX = ctl->axisRX();
   int L2 = ctl->brake();
@@ -83,7 +87,7 @@ void processGamepad(ControllerPtr ctl) {
   int buttons = ctl->buttons();
   int dPad = ctl->dpad();  // D-pad
 
-  //Controls for left wheels.
+  // Forward movement
   if (LY < NEUTRAL_POINT - DEAD_ZONE) {
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, FORWARD);
@@ -96,6 +100,7 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(LEFT_BACK_WHEEL, dutyCycle);
   }
 
+   // Backward movement 
   else if (LY > NEUTRAL_POINT + DEAD_ZONE) {
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, REVERSE);
@@ -108,13 +113,12 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(LEFT_BACK_WHEEL, dutyCycle);
   }
 
+  // Turning clockwise
   if (RX > NEUTRAL_POINT + DEAD_ZONE) {
-    //turn clockwise
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, CLOCKWISE);
     digitalWrite(LATCH_PIN, HIGH);
 
-    //Set speed.
     int dutyCycle = map(RX, (NEUTRAL_POINT + DEAD_ZONE + 1), 512, MIN_SPEED, MAX_SPEED);
     analogWrite(RIGHT_FRONT_WHEEL, dutyCycle);
     analogWrite(LEFT_FRONT_WHEEL, dutyCycle);
@@ -122,8 +126,8 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(LEFT_BACK_WHEEL, dutyCycle);
   }
 
+  // Turning counter-clockwise
   else if (RX < NEUTRAL_POINT - DEAD_ZONE) {
-    //turn counter-clockwise
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, COUNTER_CLOCKWISE);
     digitalWrite(LATCH_PIN, HIGH);
@@ -135,6 +139,8 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(RIGHT_BACK_WHEEL, dutyCycle);
     analogWrite(LEFT_BACK_WHEEL, dutyCycle);
   }
+
+  // Strafe to the left
   if (L2 > 4) {
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, STRAFE_LEFT);
@@ -145,6 +151,8 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(RIGHT_BACK_WHEEL, L2);
     analogWrite(LEFT_BACK_WHEEL, L2);
   }
+
+  // Strafe to the right
   if (R2 > 4) {
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, STRAFE_RIGHT);
@@ -155,6 +163,7 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(RIGHT_BACK_WHEEL, R2);
     analogWrite(LEFT_BACK_WHEEL, R2);
   }
+  
   if (buttons == 0x0020) {
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, DIAGONAL_RIGHT_FORWARD);
@@ -165,6 +174,7 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(RIGHT_BACK_WHEEL, DIAGONAL_SPEED);
     analogWrite(LEFT_BACK_WHEEL, 0);
   }
+  
   if (buttons == 0x0008) {
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, DIAGONAL_RIGHT_REVERSE);
@@ -175,6 +185,7 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(RIGHT_BACK_WHEEL, DIAGONAL_SPEED);
     analogWrite(LEFT_BACK_WHEEL, 0);
   }
+  
   if (buttons == 0x0010) {
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, DIAGONAL_LEFT_FORWARD);
@@ -185,6 +196,7 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(RIGHT_BACK_WHEEL, 0);
     analogWrite(LEFT_BACK_WHEEL, DIAGONAL_SPEED);
   }
+  
   if (dPad == 0x01) {
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, DIAGONAL_LEFT_REVERSE);
