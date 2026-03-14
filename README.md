@@ -1,4 +1,4 @@
-# Omnidirectional Robot Platform Development
+# Mecanum wheel control
 This documentation details the development of a Bluetooth-controlled omnidirectional robot using the ESP32 microcontroller. The project evolved from a simple differential-drive model to a versatile system capable of complex movements, including strafing sideways and diagonal movement.
 Initially, the robot used a basic differential drive with four regular wheels powered by a single L298N Motor Driver Module, enabling only forward/reverse motion and basic turning. To improve agility, Mecanum wheels and an additional motor driver were added, allowing for true omnidirectional movement and enhanced control.
 # Microcontroller and Power Architecture
