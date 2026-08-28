@@ -25,6 +25,8 @@ The system combines embedded motor control, mecanum-wheel kinematics, Bluetooth 
 
 - Variable-speed control from the PS4 analog sticks/triggers
 # Microcontroller and Power Architecture
+<img width="294" height="718" alt="mecanum_block diagram drawio" src="https://github.com/user-attachments/assets/32cb9420-f4c1-4ed8-9472-22eea626bb83" />
+
 The robot is powered by a WEMOS Lolin D32 ESP32 Development Board, chosen for its integrated battery management system and wireless capabilities (Wi-Fi and Bluetooth). A split-power architecture was implemented, with one lithium-ion battery for the ESP32 and two for the motors. This separation prevents voltage drops during high-power demands, ensuring stable performance.
 # Motor Control Architecture
 To optimize GPIO usage, a 74HC595 Shift Register was employed, reducing the need for eight GPIO pins for motor control. Four pins generate PWM signals for motor speed, while three pins control the shift register to manage directional outputs, allowing independent control of each motor.
