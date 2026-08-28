@@ -29,6 +29,12 @@ The system combines embedded motor control, mecanum-wheel kinematics, Bluetooth 
 
 The robot is powered by a WEMOS Lolin D32 ESP32 Development Board, chosen for its integrated battery management system and wireless capabilities (Wi-Fi and Bluetooth). A split-power architecture was implemented, with one lithium-ion battery for the ESP32 and two for the motors. This separation prevents voltage drops during high-power demands, ensuring stable performance.
 # Motor Control Architecture
-To optimize GPIO usage, a 74HC595 Shift Register was employed, reducing the need for eight GPIO pins for motor control. Four pins generate PWM signals for motor speed, while three pins control the shift register to manage directional outputs, allowing independent control of each motor.
+Four DC motors require multiple direction-control signals. Rather than dedicating eight ESP32 GPIO pins to motor direction, the project uses a 74HC595 serial-in, parallel-out shift register.
+
+The ESP32 interfaces with the shift register using three control lines:
+
+Motor speed remains under direct ESP32 PWM control, while the shift register handles the digital direction states.
+
+This reduced the GPIO requirements while keeping independent directional control of all four motors.
 # Controller Interface
 Control is achieved via a Bluetooth-connected PlayStation 4 DualShock Controller using the Bluepad32 library. The controller inputs map to intuitive omnidirectional commands, enabling smooth operation through the analog sticks and triggers.
