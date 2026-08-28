@@ -1,6 +1,29 @@
-# Mecanum wheel control
-This documentation details the development of a Bluetooth-controlled omnidirectional robot using the ESP32 microcontroller. The project evolved from a simple differential-drive model to a versatile system capable of complex movements, including strafing sideways and diagonal movement.
-Initially, the robot used a basic differential drive with four regular wheels powered by a single L298N Motor Driver Module, enabling only forward/reverse motion and basic turning. To improve agility, Mecanum wheels and an additional motor driver were added, allowing for true omnidirectional movement and enhanced control.
+# ESP32 Mecanum-Wheel Robot
+A Bluetooth-controlled omnidirectional mobile robot built around an ESP32. The robot uses four mecanum wheels to achieve forward/backward motion, lateral strafing, diagonal translation, and rotation in place.
+The system combines embedded motor control, mecanum-wheel kinematics, Bluetooth controller input, PWM speed control, and a split-power electrical architecture.
+
+ **Controller:** WEMOS Lolin D32 / ESP32
+ 
+ **Input:** PlayStation 4 DualShock Controller via Bluetooth
+ 
+ **Drive:** 4-wheel mecanum
+ 
+ **Motor drivers:** 2 × L298N
+ 
+ **GPIO expansion:** 74HC595 shift register
+ 
+ **Firmware:** C++
+ 
+## What the robot can do
+- Forward and backward translation
+
+- Left and right strafing
+
+- Diagonal movement
+
+- Rotation in place
+
+- Variable-speed control from the PS4 analog sticks/triggers
 # Microcontroller and Power Architecture
 The robot is powered by a WEMOS Lolin D32 ESP32 Development Board, chosen for its integrated battery management system and wireless capabilities (Wi-Fi and Bluetooth). A split-power architecture was implemented, with one lithium-ion battery for the ESP32 and two for the motors. This separation prevents voltage drops during high-power demands, ensuring stable performance.
 # Motor Control Architecture
