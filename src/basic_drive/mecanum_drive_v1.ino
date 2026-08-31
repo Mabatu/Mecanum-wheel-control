@@ -65,16 +65,14 @@ void processGamepad(ControllerPtr ctl) {
   shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, 0);
   digitalWrite(LATCH_PIN, HIGH);
 
-  /*analogWrite(leftWheels, 0);
-  analogWrite(rightWheels, 0);*/
-
+  // Read joystick and trigger values from the controller. 
   int LY = ctl->axisY();
   int RX = ctl->axisRX();
   int L2 = ctl->brake();
   int R2 = ctl->throttle();
   int buttons = ctl->buttons();
 
-  //Controls for left wheels.
+  //Forwrd motion
   if (LY < NEUTRAL_POINT - DEAD_ZONE) {
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, FORWARD);
@@ -87,7 +85,7 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(RIGHT_BACK_WHEEL, dutyCycle);
     analogWrite(LEFT_BACK_WHEEL, dutyCycle);
   }
-
+  //Reverse motion
   else if (LY > NEUTRAL_POINT + DEAD_ZONE) {
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, BACKWARD);
@@ -131,7 +129,9 @@ void processGamepad(ControllerPtr ctl) {
     analogWrite(RIGHT_BACK_WHEEL, dutyCycle);
     analogWrite(LEFT_BACK_WHEEL, dutyCycle);
   }
-  /*if (L2 > 4) {
+  /*
+  //Forward and reverse directions controlled by triggers
+  if (L2 > 4) {
     digitalWrite(RightWheelsForward, LOW);
     digitalWrite(RightWheelsReverse, HIGH);
     digitalWrite(LeftWheelsForward, LOW);
