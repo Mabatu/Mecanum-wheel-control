@@ -4,6 +4,7 @@
 #define LATCH_PIN 23
 
 void setup() {
+  //Configure pins as outputs
   pinMode(DATA_PIN, OUTPUT);
   pinMode(CLOCK_PIN, OUTPUT);
   pinMode(LATCH_PIN, OUTPUT);
